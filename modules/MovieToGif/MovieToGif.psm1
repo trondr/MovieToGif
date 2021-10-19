@@ -15,6 +15,7 @@ function Get-ScriptFolder {
     }
 }
 $global:ModuleRootPath = Get-ScriptFolder
+Write-Verbose "ModuleRootPath: $ModuleRootPath"
 $VerbosePreference = "SilentlyContinue"
 $allFunctions = @()
 # Perform Actions before loading the rest of the content
