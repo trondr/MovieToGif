@@ -58,7 +58,7 @@
                 Remove-Item -Path $palette -Force -ErrorAction SilentlyContinue
 			}
 			catch {
-				Write-Host "Convert-MovieToGif failed processing '$($source)' due to: $($_.Exception.Message)"
+				Write-Host "ERROR: Convert-MovieToGif failed processing '$($source)' due to: $($_.Exception.Message)" -ForegroundColor Red
 			}
 		}
 	}
