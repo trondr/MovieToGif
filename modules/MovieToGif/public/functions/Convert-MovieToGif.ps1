@@ -46,15 +46,16 @@
 			try {
                 Assert-FileExists -Path $source -Message "Specified movie do not exist: $source"                
                 $destination = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($source),[System.IO.Path]::GetFileNameWithoutExtension($source) + ".gif")
-                Assert-FileDoesNotExist -Path $destination -Message "Cannot convert movie to gif because destination gif allready exists."
-				Write-Host "TODO: Convert '$orgin -> $destination'->." -ForegroundColor Yellow
+                Assert-FileDoesNotExist -Path $destination -Message "Cannot convert movie to gif because destination gif allready exists."				
                 $palette = [System.IO.Path]::Combine(${env:TEMP},"palette.png")
                 if(Test-Path -LiteralPath $palette)
                 {
                     Remove-Item -Path $palette -Force -ErrorAction SilentlyContinue
                 }
-                Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-vf","`"$Options,palettegen`"","-y","`"$palette`"")
-                Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-i","`"$palette`"","-lavfi","`"$Options [x]; [x][1:v] paletteuse`"","-y","`"$destination`"")
+                $out = Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-vf","`"$Options,palettegen`"","-y","`"$palette`"")
+                Assert-ProcessSuccess -ExitCode $($out.ExitCode) -Message "ffmpeg.exe failed to create pallete image file '$palette'. Set '-LogLevel Debug' to se more information."
+                $out = Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-i","`"$palette`"","-lavfi","`"$Options [x]; [x][1:v] paletteuse`"","-y","`"$destination`"")                
+                Assert-ProcessSuccess -ExitCode $($out.ExitCode) -Message "ffmpeg.exe failed to create gif file 'destination'. Set '-LogLevel Debug' to se more information."
                 Remove-Item -Path $palette -Force -ErrorAction SilentlyContinue
 			}
 			catch {
@@ -68,4 +69,5 @@
 	}
 }
 #TEST:
+#Get-ChildItem -Path "C:\temp\movies\*.mp4" | ForEach-Object {$_.FullName} | Convert-MovieToGif
 #Get-ChildItem -Path "C:\temp\movies\*.mp4" | ForEach-Object {$_.FullName} | Convert-MovieToGif -LogLevel Debug
