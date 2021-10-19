@@ -115,7 +115,7 @@ function Start-MtGProcess {
     )
     
     begin {
-        Assert-FileExists -Path $FilePath -Message "Failed to start process '$FilePath' $Arguments." -Verbose
+        Assert-FileExists -Path $FilePath -Message "Failed to start process '$FilePath' $Arguments."
     }
     
     process {
