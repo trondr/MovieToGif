@@ -8,33 +8,57 @@
 		Convert a movie to gif using ffmpeg
 
 		.EXAMPLE
-		Convert-MovieToGif
+		Convert-MovieToGif -Path "c:\temp\movies\2021-10-19_23-49-54.mp4" -LogLevel Debug
+        
+		.EXAMPLE
+		Convert-MovieToGif -Path "c:\temp\movies\2021-10-19_23-49-54.mp4" -LogLevel Debug -Options "scale=512:-1:flags=bicubic"
+
+        .EXAMPLE
+		Get-ChildItem -Path "C:\temp\movies\*.mp4" | ForEach-Object {$_.FullName} | Convert-MovieToGif -LogLevel Debug
 
 		.NOTES        
 		Version:        1.0
 		Author:         github/trondr
 		Company:        github/trondr
 		Repository:     https://github.com/trondr/MovieToGif.git
+        Credits:        https://gist.github.com/JaimeStill/8adb695ee46425f1ee9830357cd9c6bb
 	#>
 	[CmdletBinding()]
 	Param (
-		[Parameter(ValueFromPipeline=$true)]
-		$InputObject
+		[Parameter(Mandatory=$true,ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true,ValueFromRemainingArguments=$true)]
+        [string[]]
+		$Path,
+        [ValidateSet("Quiet","Debug","Trace","Verbose","Info","Warning","Error","Fatal","Panic")]
+        [string]
+        $LogLevel="Panic",
+        [string]
+        $Options="scale=512:-1:flags=bicubic"
 	)
 	
 	begin
 	{
-		
+		Assert-FileExists -Path $($ffmpegExe) -Message "ffmpeg.exe not found"
 	}
 	process
 	{
-		foreach($item in $InputObject)
+		foreach($source in $Path)
 		{
 			try {
-				Write-Host "TODO: Implemented processing of each item in the pipe line." -ForegroundColor Yellow
+                Assert-FileExists -Path $source -Message "Specified movie do not exist: $source"                
+                $destination = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($source),[System.IO.Path]::GetFileNameWithoutExtension($source) + ".gif")
+                Assert-FileDoesNotExist -Path $destination -Message "Cannot convert movie to gif because destination gif allready exists."
+				Write-Host "TODO: Convert '$orgin -> $destination'->." -ForegroundColor Yellow
+                $palette = [System.IO.Path]::Combine(${env:TEMP},"palette.png")
+                if(Test-Path -LiteralPath $palette)
+                {
+                    Remove-Item -Path $palette -Force -ErrorAction SilentlyContinue
+                }
+                Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-vf","`"$Options,palettegen`"","-y","`"$palette`"")
+                Start-MtGProcess -FilePath $($ffmpegExe) -Arguments @("-v","$($LogLevel.ToLower())","-i","`"$source`"","-i","`"$palette`"","-lavfi","`"$Options [x]; [x][1:v] paletteuse`"","-y","`"$destination`"")
+                Remove-Item -Path $palette -Force -ErrorAction SilentlyContinue
 			}
 			catch {
-				Write-Host "Convert-MovieToGif failed processing '$($item)' due to: $($_.Exception.Message)"
+				Write-Host "Convert-MovieToGif failed processing '$($source)' due to: $($_.Exception.Message)"
 			}
 		}
 	}
@@ -43,3 +67,5 @@
 	
 	}
 }
+#TEST:
+#Get-ChildItem -Path "C:\temp\movies\*.mp4" | ForEach-Object {$_.FullName} | Convert-MovieToGif -LogLevel Debug

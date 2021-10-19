@@ -1,13 +1,14 @@
-function Assert-FileExists {
+function Assert-FileDoesNotExist {
+    
     <#
 		.SYNOPSIS
-		Assert that file exist
+		Assert that file does not allready exist
 		
 		.DESCRIPTION
-		Assert that file exist
+		Assert that file does not allready exist
 
 		.EXAMPLE
-		Assert-FileExists -Path "c:\temp\somefile.txt" -Message "Some file does not exist. Unable to proceed."
+		Assert-FileDoesNotExist -Path "c:\temp\somefile.txt" -Message "Some file allready exists. Unable to proceed."
 
 		.NOTES        
 		Version:        1.0
@@ -31,12 +32,12 @@ function Assert-FileExists {
     }
     
     process {
-        if(Test-Path -Path $Path)
+        if((Test-Path -Path $Path) -eq $false)
         {
-            Write-Verbose "File exists: $Path"
+            Write-Verbose "File does not exist: $Path"
         }
         else {
-            throw "File does not exist: $Path. $Message"
+            throw "File allready exists: $Path. $Message"
         }
     }
     
