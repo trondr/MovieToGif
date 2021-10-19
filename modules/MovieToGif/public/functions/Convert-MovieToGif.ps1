@@ -32,7 +32,7 @@
         [string]
         $LogLevel="Panic",
         [string]
-        $Options="scale=512:-1:flags=bicubic"
+        $Options="scale=1024:-1:flags=bicubic"
 	)
 	
 	begin
