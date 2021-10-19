@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_MovieToGif
+	
+SHORT DESCRIPTION
+	A short synopsis of MovieToGif
+
+LONG DESCRIPTION
+	A more detailed description of MovieToGif,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
