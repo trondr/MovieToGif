@@ -1,6 +1,10 @@
 # MovieToGif
 PowerShell module calling ffmpeg to convert a movie to gif
 
+## Example
+```
+Get-ChildItem *.mp4 | Convert-MovieToGif
+```
 ## Import module for development and testing
 ```powershell
 Import-Module -Path ".\modules\MovieToGif"
