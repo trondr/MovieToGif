@@ -3,7 +3,7 @@
 	RootModule = 'MovieToGif.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '1.0.0'
+	ModuleVersion = '1.0.1'
 	
 	# ID used to uniquely identify this module
 	GUID = '80875c2b-c786-44ff-b7b7-4cc33c07abf7'
@@ -59,13 +59,13 @@
 		PSData = @{
 			
 			# Tags applied to this module. These help with module discovery in online galleries.
-			# Tags = @()
+			Tags = @("Convert-MovieToGif","ffmpeg")
 			
 			# A URL to the license for this module.
-			# LicenseUri = ''
+			LicenseUri = 'https://github.com/trondr/MovieToGif/blob/main/LICENSE'
 			
 			# A URL to the main website for this project.
-			# ProjectUri = ''
+			ProjectUri = 'https://github.com/trondr/MovieToGif'
 			
 			# A URL to an icon representing this module.
 			# IconUri = ''
