@@ -22,3 +22,9 @@ Publish-Module -Path ".\modules\MovieToGif" -Repository LocalPSModuleRepository
 Install-Module -Name MovieToGif -Repository LocalPSModuleRepository
 Import-Module MovieToGif
 ```
+
+## Publish Module to PowerShell Gallery
+```powershell
+$ApiKey="...api...key...here..."
+Publish-Module -Path ".\modules\MovieToGif" -Repository PSGallery -NuGetApiKey $ApiKey
+```
