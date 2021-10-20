@@ -1,23 +1,23 @@
 # MovieToGif
 PowerShell module calling ffmpeg to convert a movie to gif
 
-## Development and Testing
+## Import module for development and testing
 ```powershell
 Import-Module -Path ".\modules\MovieToGif"
 ```
 
-## Prepare Local Repository
+## Setup local repository
 ```powershell
 New-Item -Path C:\ -Name "PSModuleRepository" -ItemType Directory
-PS51> Register-PSRepository -Name 'PSModuleRepository' -SourceLocation 'C:\PSModuleRepository' -PublishLocation 'C:\PSModuleRepository' -InstallationPolicy Trusted
+Register-PSRepository -Name 'PSModuleRepository' -SourceLocation 'C:\PSModuleRepository' -PublishLocation 'C:\PSModuleRepository' -InstallationPolicy Trusted
 ```
 
-## Publish Module
+## Publish Module to local repository
 ```powershell
 Publish-Module -Path ".\modules\MovieToGif" -Repository LocalPSModuleRepository
 ```
 
-## Install Module
+## Install Module from local repository
 ```powershell
 Install-Module -Name MovieToGif -Repository LocalPSModuleRepository
 Import-Module MovieToGif
