@@ -3,7 +3,7 @@
 	RootModule = 'MovieToGif.psm1'
 	
 	# Version number of this module.
-	ModuleVersion = '1.0.2'
+	ModuleVersion = '1.0.3'
 	
 	# ID used to uniquely identify this module
 	GUID = '80875c2b-c786-44ff-b7b7-4cc33c07abf7'

@@ -16,9 +16,9 @@ namespace MovieToGif.CSharp
                 this.StandardOut = standardOut;
                 this.StandardError = standardError;
             }
-            public int ExitCode {get;}
-            public string StandardOut {get;}
-            public string StandardError {get;}
+            public int ExitCode {get;set;}
+            public string StandardOut {get;set;}
+            public string StandardError {get;set;}
         }
 
         public static ProcessResult StartProcess(string filePath, string[] args, int timeoutInMilliseconds)
@@ -74,7 +74,7 @@ namespace MovieToGif.CSharp
                     }
                     else
                     {
-                        return new ProcessResult(258,output.ToString(),$"ERROR: Timedout waiting for process to exit: (\"{filePath}\" {arguments})");
+                        return new ProcessResult(258,output.ToString(),"ERROR: Timedout waiting for process to exit:" + filePath  + " " + arguments);
                     }
                 }
             }
